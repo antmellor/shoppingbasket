@@ -27,6 +27,13 @@ namespace ShoppingBasket.Services
 
         public void AddProduct(long barcode)
         {
+            // check if product already exists first and increase quantity.
+            if (IsProductInBasket(barcode))
+            {
+                _basketProducts.Find(p => p.Product.Barcode == barcode).Quantity++;
+                return;
+            }
+
             var product = _repository.GetProductByBarcode(barcode);
             var basketProduct = new BasketProduct
             {
@@ -34,6 +41,11 @@ namespace ShoppingBasket.Services
                 Quantity = 1
             };
             _basketProducts.Add(basketProduct);
+        }
+
+        private bool IsProductInBasket(long barcode)
+        {
+            return _basketProducts.Where(bp => bp.Product.Barcode == barcode).Any();
         }
 
         public int GetDistinctProductCount()
