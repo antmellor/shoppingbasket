@@ -13,5 +13,8 @@ namespace ShoppingBasket.Models
         public string OfferName { get; set; }
         public int QuantityForOffer { get; set; }
         public decimal Price { get; set; }
+
+
+        public Product Product { get; set;  }
     }
 }

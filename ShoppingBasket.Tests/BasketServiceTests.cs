@@ -3,6 +3,7 @@ using ShoppingBasket.Models;
 using ShoppingBasket.Repositories;
 using ShoppingBasket.Services;
 using System;
+using System.Collections.Generic;
 using Xunit;
 
 namespace ShoppingBasket.Tests
@@ -23,7 +24,7 @@ namespace ShoppingBasket.Tests
             mockProductRepository.Setup(m => m.GetProductByBarcode(apple.Barcode)).Returns(apple);
             mockProductRepository.Setup(m => m.GetProductByBarcode(orange.Barcode)).Returns(orange);
             mockProductRepository.Setup(m => m.GetProductByBarcode(banana.Barcode)).Returns(banana);
-            mockProductRepository.Setup(m => m.GetOffers()).Returns(orangeOffer);
+            mockProductRepository.Setup(m => m.GetOffers()).Returns(new List<Offer>() { orangeOffer });
         }
 
         private void setupProducts()
@@ -56,7 +57,9 @@ namespace ShoppingBasket.Tests
                 OfferId = 1,
                 ProductId = 2,
                 OfferName = "3 for £1 Oranges",
-                Price = (decimal)1.00
+                Price = (decimal)1.00,
+                Product = orange,
+                QuantityForOffer = 3
             };
         }
 

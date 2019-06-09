@@ -1,17 +1,15 @@
-﻿using System;
+﻿using ShoppingBasket.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ShoppingBasket.Models
+namespace ShoppingBasket
 {
-    public class BasketProduct
+    public class BasketOffer
     {
-        public Product Product { get; set; }
+        public Offer Offer { get; set; }
         public int Quantity { get; set; }
-
-
-
     }
 }

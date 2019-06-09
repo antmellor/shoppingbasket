@@ -10,6 +10,6 @@ namespace ShoppingBasket.Repositories
     public interface IProductRepository
     {
         Product GetProductByBarcode(long barcode);
-        object GetOffers();
+        List<Offer> GetOffers();
     }
 }
