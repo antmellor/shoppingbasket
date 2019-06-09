@@ -9,6 +9,6 @@ namespace ShoppingBasket.Repositories
 {
     public interface IProductRepository
     {
-        Product GetProductByBarcode(); 
+        Product GetProductByBarcode(long barcode); 
     }
 }

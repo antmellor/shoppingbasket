@@ -31,12 +31,12 @@ namespace ShoppingBasket.Tests
             };
 
             var repo = new Mock<IProductRepository>();
+            repo.Setup(m => m.GetProductByBarcode(barcode)).Returns(mockApple);
 
             var basket = new BasketService(repo.Object);
             basket.AddItem(barcode);
 
             Assert.Equal(mockApple.Price, basket.GetTotal());
-
         }
     }
 }

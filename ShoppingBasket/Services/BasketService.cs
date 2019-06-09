@@ -27,7 +27,13 @@ namespace ShoppingBasket.Services
 
         public void AddItem(long barcode)
         {
-            throw new NotImplementedException();
+            var product = _repository.GetProductByBarcode(barcode);
+            var basketProduct = new BasketProduct
+            {
+                Product = product,
+                Quantity = 1
+            };
+            _basketProducts.Add(basketProduct);
         }
     }
 }
