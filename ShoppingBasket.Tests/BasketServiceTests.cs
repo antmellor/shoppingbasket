@@ -1,3 +1,5 @@
+using Moq;
+using ShoppingBasket.Repositories;
 using ShoppingBasket.Services;
 using System;
 using Xunit;
@@ -9,7 +11,9 @@ namespace ShoppingBasket.Tests
         [Fact]
         public void BasketService_WhenBasketIsEmpty_TotalPriceIsZero()
         {
-            var basket = new BasketService();
+            var repo = new Mock<IProductRepository>();
+
+            var basket = new BasketService(repo.Object);
 
             Assert.Equal(0, basket.GetTotal());
         }
@@ -17,7 +21,6 @@ namespace ShoppingBasket.Tests
         [Fact]
         public void BasketService_WhenSingleItemAddedToBasket_TotalPriceMatchesItemPrice()
         {
-            var 
         }
     }
 }
