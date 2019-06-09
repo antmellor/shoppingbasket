@@ -163,6 +163,17 @@ namespace ShoppingBasket.Tests
         }
 
         [Fact]
+        public void BasketService_WhenWeightedProductAddedToBasketMoreThanWeightPrice_TotalPriceIsMoreThanWeightPrice()
+        {
+            var basket = new BasketService(mockProductRepository.Object);
+
+            basket.AddWeightedProduct(sweets.Barcode, 300);
+
+            Assert.Equal(sweets.Price * 3, basket.GetTotal());
+            Assert.True(sweets.Price < basket.GetTotal());
+        }
+
+        [Fact]
         public void BasketService_WhenMultipleItemsAddedToBasket_TotalPriceIsCalculatedCorrectly()
         {
             var basket = new BasketService(mockProductRepository.Object);
