@@ -14,6 +14,7 @@ namespace ShoppingBasket.Tests
         private Product apple;
         private Product orange;
         private Product banana;
+        private Product sweets;
         private Offer orangeOffer;
         private Mock<IProductRepository> mockProductRepository;
 
@@ -24,6 +25,7 @@ namespace ShoppingBasket.Tests
             mockProductRepository.Setup(m => m.GetProductByBarcode(apple.Barcode)).Returns(apple);
             mockProductRepository.Setup(m => m.GetProductByBarcode(orange.Barcode)).Returns(orange);
             mockProductRepository.Setup(m => m.GetProductByBarcode(banana.Barcode)).Returns(banana);
+            mockProductRepository.Setup(m => m.GetProductByBarcode(sweets.Barcode)).Returns(sweets);
             mockProductRepository.Setup(m => m.GetOffers()).Returns(new List<Offer>() { orangeOffer });
         }
 
@@ -49,7 +51,17 @@ namespace ShoppingBasket.Tests
                 Barcode = 300000000000,
                 ItemName = "Banana",
                 Price = (decimal)2.00,
-                IsPricedByWeight = true
+                UnitOfWeight = "lb",
+                WeightForPrice = 1
+            };
+            sweets = new Product
+            {
+                ProductId = 4,
+                Barcode = 400000000000,
+                ItemName = "Sweet Selection",
+                Price = (decimal)1.50,
+                UnitOfWeight = "g",
+                WeightForPrice = 100
             };
 
             orangeOffer = new Offer
@@ -126,6 +138,28 @@ namespace ShoppingBasket.Tests
 
             var expectedResult = orangeOffer.Price + (2 * orange.Price);
             Assert.Equal(expectedResult, basket.GetTotal());
+        }
+
+        [Fact]
+        public void BasketService_WhenWeightedProductAddedToBasketMatchingPriceWeight_TotalPriceEqualsWeightPrice()
+        {
+            var basket = new BasketService(mockProductRepository.Object);
+
+            basket.AddWeightedProduct(banana.Barcode, 1);
+
+            Assert.Equal(banana.Price, basket.GetTotal());
+        }
+
+
+        [Fact]
+        public void BasketService_WhenWeightedProductAddedToBasketLessThanWeightPrice_TotalPriceIsLessThanWeightPrice()
+        {
+            var basket = new BasketService(mockProductRepository.Object);
+
+            basket.AddWeightedProduct(sweets.Barcode, 50);
+
+            Assert.Equal(sweets.Price / 2, basket.GetTotal());
+            Assert.True(sweets.Price > basket.GetTotal());
         }
 
     }

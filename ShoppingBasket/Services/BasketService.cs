@@ -41,7 +41,7 @@ namespace ShoppingBasket.Services
 
                 // divide the quantity in the basket by the quantity required for the offer 
                 // to get the total number of times the offer should be applied.
-                var quantityOfOfferApplied = basketProduct.Quantity / offer.QuantityForOffer;
+                var quantityOfOfferApplied = (int)basketProduct.Quantity / offer.QuantityForOffer;
                 _appliedOffers.Add(new BasketOffer { Offer = offer, Quantity = quantityOfOfferApplied });
 
                 // update the BasketProduct quantity to be the remainder, where an offer has not been applied.
@@ -75,6 +75,29 @@ namespace ShoppingBasket.Services
         public int GetDistinctProductCount()
         {
             return _basketProducts.Count;
+        }
+
+        public void AddWeightedProduct(long barcode, decimal weight)
+        {
+            if (IsProductInBasket(barcode))
+            {
+                var bp = _basketProducts.Find(p => p.Product.Barcode == barcode);
+                bp.Quantity += GetWeightedQuantity(weight, bp.Product.WeightForPrice);
+                return;
+            }
+
+            var product = _repository.GetProductByBarcode(barcode);
+            var basketProduct = new BasketProduct
+            {
+                Product = product,
+                Quantity = GetWeightedQuantity(weight, product.WeightForPrice)
+            };
+            _basketProducts.Add(basketProduct);
+        }
+
+        private decimal GetWeightedQuantity(decimal scannedWeight, decimal pricedWeight)
+        {
+            return scannedWeight / pricedWeight;
         }
     }
 }

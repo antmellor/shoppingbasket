@@ -9,9 +9,6 @@ namespace ShoppingBasket.Models
     public class BasketProduct
     {
         public Product Product { get; set; }
-        public int Quantity { get; set; }
-
-
-
+        public decimal Quantity { get; set; }
     }
 }

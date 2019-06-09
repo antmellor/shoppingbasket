@@ -12,7 +12,9 @@ namespace ShoppingBasket.Models
         public long Barcode { get; set; }
         public string ItemName { get; set; }
         public decimal Price { get; set; }
-        public bool IsPricedByWeight { get; set; }
-        
+        public bool IsWeightedProduct { get; set; }
+        public string UnitOfWeight { get; set; }
+        public decimal WeightForPrice { get; set; }
+
     }
 }
