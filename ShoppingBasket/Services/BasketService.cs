@@ -24,5 +24,10 @@ namespace ShoppingBasket.Services
         {
             return _basketProducts.Select(p => p.Product.Price * p.Quantity).Sum();
         }
+
+        public void AddItem(long barcode)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
