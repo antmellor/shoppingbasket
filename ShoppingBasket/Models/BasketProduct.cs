@@ -10,5 +10,6 @@ namespace ShoppingBasket.Models
     {
         public Product Product { get; set; }
         public decimal Quantity { get; set; }
+        public decimal Price => Product.Price * Quantity;
     }
 }

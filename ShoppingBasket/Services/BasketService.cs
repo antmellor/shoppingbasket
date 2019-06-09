@@ -27,8 +27,7 @@ namespace ShoppingBasket.Services
             ApplyOffers();
 
             return
-                _appliedOffers.Select(p => p.Offer.Price * p.Quantity).Sum() +
-                _basketProducts.Select(p => p.Product.Price * p.Quantity).Sum();
+                _appliedOffers.Sum(o => o.Price) + _basketProducts.Sum(p => p.Price);
         }
 
         private void ApplyOffers()

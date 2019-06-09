@@ -11,5 +11,6 @@ namespace ShoppingBasket
     {
         public Offer Offer { get; set; }
         public int Quantity { get; set; }
+        public decimal Price => Offer.Price * Quantity;
     }
 }
