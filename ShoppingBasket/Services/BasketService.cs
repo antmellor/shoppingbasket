@@ -35,5 +35,10 @@ namespace ShoppingBasket.Services
             };
             _basketProducts.Add(basketProduct);
         }
+
+        public int GetDistinctProductCount()
+        {
+            return _basketProducts.Count;
+        }
     }
 }

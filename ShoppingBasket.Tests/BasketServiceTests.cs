@@ -71,10 +71,14 @@ namespace ShoppingBasket.Tests
 
             // mock concept of scanning an item twice  
             basket.AddProduct(apple.Barcode);
-            basket.AddProduct(apple.Barcode);           
+            basket.AddProduct(apple.Barcode);
+
+            var distinctCountOfProductsInBasket = basket.GetDistinctProductCount();
 
             var expectedResult = apple.Price * 2;
             Assert.Equal(expectedResult, basket.GetTotal());
+
+            Assert.Equal(1, distinctCountOfProductsInBasket);
         }
         
     }
