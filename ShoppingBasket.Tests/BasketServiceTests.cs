@@ -13,6 +13,7 @@ namespace ShoppingBasket.Tests
         private Product apple;
         private Product orange;
         private Product banana;
+        private Offer orangeOffer;
         private Mock<IProductRepository> mockProductRepository;
 
         public BasketServiceTests()
@@ -22,28 +23,40 @@ namespace ShoppingBasket.Tests
             mockProductRepository.Setup(m => m.GetProductByBarcode(apple.Barcode)).Returns(apple);
             mockProductRepository.Setup(m => m.GetProductByBarcode(orange.Barcode)).Returns(orange);
             mockProductRepository.Setup(m => m.GetProductByBarcode(banana.Barcode)).Returns(banana);
+            mockProductRepository.Setup(m => m.GetOffers()).Returns(orangeOffer);
         }
 
         private void setupProducts()
         {
             apple = new Product
             {
+                ProductId = 1,
                 Barcode = 100000000000,
                 ItemName = "Apple",
                 Price = (decimal)0.50
             };
             orange = new Product
             {
+                ProductId = 2,
                 Barcode = 200000000000,
                 ItemName = "Orange",
                 Price = (decimal)0.45
             };
             banana = new Product
             {
+                ProductId = 3,
                 Barcode = 300000000000,
                 ItemName = "Banana",
                 Price = (decimal)2.00,
                 IsPricedByWeight = true
+            };
+
+            orangeOffer = new Offer
+            {
+                OfferId = 1,
+                ProductId = 2,
+                OfferName = "3 for £1 Oranges",
+                Price = (decimal)1.00
             };
         }
 
@@ -79,6 +92,16 @@ namespace ShoppingBasket.Tests
             Assert.Equal(expectedResult, basket.GetTotal());
 
             Assert.Equal(1, distinctCountOfProductsInBasket);
+        }
+
+        [Fact]
+        public void BasketService_WhenOfferOnMultipleItemsIsAppliedAndNumberOfItemsMeetsOfferCount_TotalPriceMatchesItemPrice()
+        {
+            var basket = new BasketService(mockProductRepository.Object);
+
+            basket.AddProduct(orange.Barcode, 3);
+
+            Assert.Equal(orangeOffer.Price, basket.GetTotal());
         }
         
     }

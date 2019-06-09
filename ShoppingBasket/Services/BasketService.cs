@@ -25,12 +25,12 @@ namespace ShoppingBasket.Services
             return _basketProducts.Select(p => p.Product.Price * p.Quantity).Sum();
         }
 
-        public void AddProduct(long barcode)
+        public void AddProduct(long barcode, int quantity = 1)
         {
             // check if product already exists first and increase quantity.
             if (IsProductInBasket(barcode))
             {
-                _basketProducts.Find(p => p.Product.Barcode == barcode).Quantity++;
+                _basketProducts.Find(p => p.Product.Barcode == barcode).Quantity += quantity;
                 return;
             }
 
@@ -38,7 +38,7 @@ namespace ShoppingBasket.Services
             var basketProduct = new BasketProduct
             {
                 Product = product,
-                Quantity = 1
+                Quantity = quantity
             };
             _basketProducts.Add(basketProduct);
         }
