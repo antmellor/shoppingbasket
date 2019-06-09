@@ -162,5 +162,28 @@ namespace ShoppingBasket.Tests
             Assert.True(sweets.Price > basket.GetTotal());
         }
 
+        [Fact]
+        public void BasketService_WhenMultipleItemsAddedToBasket_TotalPriceIsCalculatedCorrectly()
+        {
+            var basket = new BasketService(mockProductRepository.Object);
+
+            basket.AddProduct(apple.Barcode, 3);
+            basket.AddProduct(orange.Barcode, 5);
+            basket.AddWeightedProduct(banana.Barcode, 2);
+
+            /*  
+             *  3 apples =          £1.50,
+             *  5 oranges
+             *  --> 1 offer         £1.00 
+             *  --> 2 orange        £0.90
+             *  6 bananas           £4.00 (2 X £2 per lb)
+             *  expected total      £7.40
+             */
+
+            var expectedResult = (decimal)7.40;
+
+            Assert.Equal(expectedResult, basket.GetTotal());
+        }
+
     }
 }
