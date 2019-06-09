@@ -25,7 +25,7 @@ namespace ShoppingBasket.Services
             return _basketProducts.Select(p => p.Product.Price * p.Quantity).Sum();
         }
 
-        public void AddItem(long barcode)
+        public void AddProduct(long barcode)
         {
             var product = _repository.GetProductByBarcode(barcode);
             var basketProduct = new BasketProduct
