@@ -98,7 +98,7 @@ namespace ShoppingBasket.Tests
         }
 
         [Fact]
-        public void BasketService_WhenOfferOnMultipleItemsIsAppliedAndNumberOfItemsMeetsOfferCount_TotalPriceMatchesItemPrice()
+        public void BasketService_WhenOfferOnMultipleItemsIsAppliedAndNumberOfItemsMeetsOfferCount_TotalPriceMatchesOfferPrice()
         {
             var basket = new BasketService(mockProductRepository.Object);
 
@@ -106,6 +106,27 @@ namespace ShoppingBasket.Tests
 
             Assert.Equal(orangeOffer.Price, basket.GetTotal());
         }
+
+        [Fact]
+        public void BasketService_WhenOfferOnMultipleItemsIsAppliedButNumberOfItemsDoesNotMeetOfferCount_TotalPriceMatchesItemPrice()
+        {
+            var basket = new BasketService(mockProductRepository.Object);
+
+            basket.AddProduct(orange.Barcode, 2);
+
+            Assert.Equal(orange.Price * 2, basket.GetTotal());
+        }
         
+        [Fact]
+        public void BasketService_WhenCountOfItemsExceedsOfferCountWithARemainder_TotalPriceIsCombinationOfOfferPlusItemPrice()
+        {
+            var basket = new BasketService(mockProductRepository.Object);
+
+            basket.AddProduct(orange.Barcode, 5);
+
+            var expectedResult = orangeOffer.Price + (2 * orange.Price);
+            Assert.Equal(expectedResult, basket.GetTotal());
+        }
+
     }
 }
